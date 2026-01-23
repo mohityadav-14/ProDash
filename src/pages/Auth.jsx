@@ -22,9 +22,9 @@
 
 
 
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
-
+import React, { useState,useContext } from 'react'
+import { AuthContext } from '../contaxt/AuthContext';
+import { Link,useNavigate } from 'react-router-dom';
 const Auth = () => {
 
   const[fullName,setFullName]=useState("");
@@ -33,46 +33,58 @@ const [email,setEmail]=useState("");
 const[eError,setEError]=useState("");
 const[passWord,setPassWord]=useState("");
 const[pError,setPError]=useState("");
-const [isSignUp,setIsSignUp]=useState(true);
+const [isSignUp,setIsSignUp]=useState(false);
 
+//3. consume the data by  usecontext hook
+const {login } = useContext(AuthContext);
+const navigate = useNavigate(); // Initialize navigate
 function handleSubmit(){
 if(fullName===""){
   setError("Enter Your Full Name ")
 }
-
+else{
+  setError("")
+}
 if(email===""){
   setEError("Enter Your Email Id")
 }
 
-
+else{
+  setEError("")
+}
 if(passWord===""){
   setPError("Enter Your PassWord")
 }
+else{
+  setPError("")
+}
 
-
-
- const userData={
-  name:fullName,
-  email:email,
-  passWord:passWord
- }
- // converting objrct into string 
  
  
  
  if(email!=="" && fullName!=="" && passWord!=="" ){
-   localStorage.setItem("user",JSON.stringify(userData))
+// creating new object to store all fields
+   const userData={
+  name:fullName,
+  email:email,
+  passWord:passWord
+ }
+// login fn call : consuming by usecontext
+   login(userData);
+   navigate("/");
    setEmail("")
    setFullName("")
-  setPassWord("")
+   setPassWord("")
+} 
 
+if(!isSignUp && email!==""){
+  navigate("/")
 }
-  
 }
 
 
   return (
-    <div className="w-full min-h-screen bg-slate-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="w-full min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50 to-purple-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       {/* Auth Card */}
       <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-3xl shadow-2xl shadow-slate-200 border border-slate-100">
         
@@ -136,15 +148,15 @@ if(passWord===""){
           </div>
 
           {/* Action Button */}
-          <Link to="/">
+   
 
-          <button onClick={handleSubmit} className="w-full bg-slate-900  font-bold py-4 rounded-xl hover:bg-indigo-600 shadow-xl shadow-slate-200 transition-all duration-300 active:scale-[0.98] mt-2">
+          <button onClick={handleSubmit} className="w-full text-white bg-gradient-to-r from-indigo-600 to-purple-600 font-bold py-4 rounded-xl hover:from-indigo-700 hover:to-purple-700 shadow-xl shadow-indigo-200 transition-all duration-300 active:scale-[0.98] mt-2">
             {/* sign up ha  to sign up dekhe sign in ha to sign in dekhe  */}
         
             {isSignUp?"Sign Up":"Sign In "}
           </button>
-          </Link>
-        
+       
+      
 
           {/* Footer Link */}
           <p className="text-center text-sm text-slate-500 mt-6">

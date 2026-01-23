@@ -125,7 +125,7 @@ const Contact = () => {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-6">
             <div className="w-md bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
                 <h1 className="text-3xl font-bold text-gray-800 mb-4 text-center">Contact Us</h1>
                 
@@ -184,7 +184,7 @@ const Contact = () => {
                     {/* Submit Button */}
                     <button 
                         onClick={handleSumbmit}
-                        className="w-full bg-indigo-600 font-bold py-3 rounded-lg transition-all active:scale-95 shadow-lg shadow-indigo-100 mt-4"
+                        className="w-full text-white bg-gradient-to-r from-indigo-600 to-blue-600 font-bold py-3 rounded-lg hover:from-indigo-700 hover:to-blue-700 transition-all active:scale-95 shadow-lg shadow-indigo-200 mt-4"
                     >
                         Submit
                     </button>

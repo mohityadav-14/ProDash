@@ -24,22 +24,35 @@
 
 // export default Navbar;
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// Import the specific icons you need
+import {
+  faHeadset, // Support
+  faCartShopping, // Cart
+  faUser, // User
+  // faStar          // Rating
+  faCircleInfo, //about
+  faGaugeHigh, // dasboard
+  faParking,
+} from "@fortawesome/free-solid-svg-icons";
+
 import { Link, Route, Routes } from "react-router-dom";
 import Home from "../pages/Home";
 import Contact from "../pages/Contact";
 import Auth from "../pages/Auth";
 import { useContext } from "react";
 import { AuthContext } from "../contaxt/AuthContext";
+import About from "../pages/About";
+import Cart from "../pages/Cart";
+import { useSelector } from "react-redux";
 
 function Navbar() {
-  const userName = localStorage.getItem("user");
-  // converting sting into object
-  const users = JSON.parse(userName);
-
-  // 3 consueme the data using useContext hook
+  const { user, logout } = useContext(AuthContext);
+  // 3. consume the data using useContext hook
   let userData = useContext(AuthContext);
 
   console.log(userData, "this user data ");
+  const totalItems = useSelector((state) => state.cart.totalQuantity);
 
   return (
     <>
@@ -50,7 +63,9 @@ function Navbar() {
             {/* Logo/Brand */}
             <div className="flex-shrink-0 flex items-center">
               <div className="h-8 w-8 bg-indigo-600 rounded-lg flex items-center justify-center mr-2 shadow-indigo-200 shadow-lg">
-                <span className="text-white font-bold text-xs">P</span>
+                <span className="text-white font-bold text-xs">
+                  <FontAwesomeIcon icon={faParking} size="2x" />
+                </span>
               </div>
               <span className="text-xl font-extrabold tracking-tight text-slate-900">
                 PRO<span className="text-indigo-600">DASH</span>
@@ -63,25 +78,47 @@ function Navbar() {
                 to="/"
                 className="text-sm font-semibold transition-all duration-200 ease-in-out"
               >
-                Dashboard
+                <FontAwesomeIcon icon={faGaugeHigh} /> Dashboard
+              </Link>
+
+              <Link to="/about">
+                <FontAwesomeIcon icon={faCircleInfo} /> About
               </Link>
               <Link
                 to="/support"
                 className="text-sm font-semibold text-slate-600  transition-all duration-200 ease-in-out"
               >
-                Support
+                <FontAwesomeIcon icon={faHeadset} /> Support
               </Link>
-              {/* user name from local storage  */}
-              🙎‍♂️ {users?.name}
-              <div className="h-6w-[1px] bg-slate-200"></div>{" "}
+
+             <Link to="/cart" className="flex justify-between p-3 ">
+                <span className="relative">
+                <FontAwesomeIcon icon={faCartShopping} />
+                 <span className="absolute top-0 right-0 bg-indigo-100 p-1 leading-[4px] !rounded-full text-[8px] text-black">
+                  
+          {totalItems}
+                </span>
+        </span>
+              </Link>
+   
+              {/* user name from consuming by context*/}
+
+              {user && (
+                <div>
+                  <span>
+                    <FontAwesomeIcon icon={faUser} />{" "}
+                  </span>
+                  {user?.name}
+                </div>
+              )}
               {/* Vertical Divider */}
+
               <Link
-                to="/auth" 
-                className="inline-flex items-center justify-center px-5 py-2.5 text-sm font-bold text-white bg-green-900 rounded-full"
-             onClick={()=>{users && localStorage.removeItem("user")}}
+                onClick={logout}
+                to="/login"
+                className="inline-block  text-center  !text-white bg-gradient-to-r from-indigo-600 to-purple-600 font-bold py-2 px-6 rounded-xl shadow-lg shadow-indigo-200 hover:shadow-indigo-300 transition-all active:scale-95"
               >
-               {users?"Logout":" Sign In"}
-               
+                {user ? "Logout" : " Sign In"}
               </Link>
             </div>
           </div>
@@ -92,8 +129,10 @@ function Navbar() {
       <main className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
           <Route path="/support" element={<Contact />} />
-          <Route path="/auth" element={<Auth />} />
+          <Route path="/login" element={<Auth />} />
+          <Route path="/cart" element={<Cart />} />
         </Routes>
       </main>
     </>
