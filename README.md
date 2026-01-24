@@ -49,7 +49,7 @@ ProDash is a high-performance product listing and management application built w
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/yourusername/prodash.git
+git clone https://github.com/mohityadav-14/ProDash
 ```
 
 2. **Install dependencies**
